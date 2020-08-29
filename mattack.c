@@ -37,7 +37,7 @@ void mattack_maps_updated(struct mattack_t *ma)
         while(1)
         {
             /* Wait for a command */
-            while(ma->cmd == ma_IDLE);
+            while(ma->cmd == ma_IDLE) asm("pause");
 
             switch(ma->cmd)
             {
@@ -68,7 +68,7 @@ void mattack_read(struct mattack_t *ma, void *from, void *buff, size_t len)
     ma->addr = from;
     ma->len = len;
     ma->cmd = ma_READ;
-    while(ma->cmd != ma_IDLE);
+    while(ma->cmd != ma_IDLE) asm("pause");
     memcpy(buff, ma->buff, len);
 }
 
@@ -78,5 +78,5 @@ void mattack_write(struct mattack_t *ma, void *to, void *buff, size_t len)
     ma->addr = to;
     ma->len = len;
     ma->cmd = ma_WRITE;
-    while(ma->cmd != ma_IDLE);
+    while(ma->cmd != ma_IDLE) asm("pause");
 }
